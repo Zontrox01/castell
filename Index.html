@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Luces en la noche</title>
+  <title>El misteri del castell</title>
   <style>
     html, body {
       margin: 0;
@@ -38,10 +38,46 @@
     <a href="https://sites.google.com/view/elmisteriodelcastillo/instruccions">
       <img src="catala.png">
     </a>
-
     <a href="https://sites.google.com/view/elmisteriodelcastillo/instrucciones">
       <img src="castellano.png" alt="Instrucciones">
     </a>
   </div>
+
+  <script>
+    // Esta parte se ejecuta automáticamente
+    var idioma = localStorage.getItem('idioma_juego');
+    var urlParams = new URLSearchParams(window.location.search);
+    var codigo = urlParams.get('c');
+
+    var destinos = {
+      'ca': {
+        '8xK4': 'https://sites.google.com/view/elmisteriodelcastillo/instruccions',
+        '16M5': 'https://sites.google.com/view/elmisteriodelcastillo/llums-en-la-nit',
+        'Q2p7': 'https://sites.google.com/view/elmisteriodelcastillo/tercera-pista-ca',
+        '5Rz1': 'https://sites.google.com/view/elmisteriodelcastillo/cuarta-pista-ca',
+        '7Mw3': 'https://sites.google.com/view/elmisteriodelcastillo/quinta-pista-ca',
+        '3F9a': 'https://sites.google.com/view/elmisteriodelcastillo/sexta-pista-ca'
+      },
+      'es': {
+        '8xK4': 'https://sites.google.com/view/elmisteriodelcastillo/instrucciones',
+        '16M5': 'https://sites.google.com/view/elmisteriodelcastillo/luces-en-la-noche',
+        'Q2p7': 'https://sites.google.com/view/elmisteriodelcastillo/tercera-pista-es',
+        '5Rz1': 'https://sites.google.com/view/elmisteriodelcastillo/cuarta-pista-es',
+        '7Mw3': 'https://sites.google.com/view/elmisteriodelcastillo/quinta-pista-es',
+        '3F9a': 'https://sites.google.com/view/elmisteriodelcastillo/sexta-pista-es'
+      }
+    };
+
+    // Si hay código en la URL, redirigir automáticamente
+    if (codigo) {
+      if (!idioma) {
+        window.location.href = 'https://sites.google.com/view/elmisteriodelcastillo/inici';
+      } else if (destinos[idioma] && destinos[idioma][codigo]) {
+        window.location.href = destinos[idioma][codigo];
+      } else {
+        window.location.href = 'https://sites.google.com/view/elmisteriodelcastillo/inici';
+      }
+    }
+  </script>
 </body>
 </html>
