@@ -26,7 +26,7 @@
       gap: 120px;
     }
 
-    .container a img {
+    .container img {
       max-width: 200px;
       height: auto;
       cursor: pointer;
@@ -35,47 +35,46 @@
 </head>
 <body>
   <div class="container">
-    <a href="https://sites.google.com/view/elmisteriodelcastillo/instruccions">
-      <img src="catala.png">
-    </a>
-    <a href="https://sites.google.com/view/elmisteriodelcastillo/instrucciones">
-      <img src="castellano.png" alt="Instrucciones">
-    </a>
+    <img src="catala.png" onclick="guardarIdioma('ca')" alt="Català">
+    <img src="castellano.png" onclick="guardarIdioma('es')" alt="Castellano">
   </div>
 
   <script>
-    // Esta parte se ejecuta automáticamente
-    var idioma = localStorage.getItem('idioma_juego');
+    function guardarIdioma(idioma) {
+      localStorage.setItem('idioma_juego', idioma);
+      if (idioma === 'ca') {
+        window.location.href = 'https://sites.google.com/view/elmisteriodelcastillo/instruccions';
+      } else {
+        window.location.href = 'https://sites.google.com/view/elmisteriodelcastillo/instrucciones';
+      }
+    }
+
+    // Redirección automática si hay código en la URL
     var urlParams = new URLSearchParams(window.location.search);
     var codigo = urlParams.get('c');
 
-    var destinos = {
-      'ca': {
-        //'8xK4': 'https://sites.google.com/view/elmisteriodelcastillo/instruccions',
-        '16M5': 'https://sites.google.com/view/elmisteriodelcastillo/llums-en-la-nit',
-        'Q2p7': 'https://sites.google.com/view/elmisteriodelcastillo/tercera-pista-ca',
-        '5Rz1': 'https://sites.google.com/view/elmisteriodelcastillo/cuarta-pista-ca',
-        '7Mw3': 'https://sites.google.com/view/elmisteriodelcastillo/quinta-pista-ca',
-        '3F9a': 'https://sites.google.com/view/elmisteriodelcastillo/sexta-pista-ca'
-      },
-      'es': {
-        //'8xK4': 'https://sites.google.com/view/elmisteriodelcastillo/instrucciones',
-        '16M5': 'https://sites.google.com/view/elmisteriodelcastillo/luces-en-la-noche',
-        'Q2p7': 'https://sites.google.com/view/elmisteriodelcastillo/tercera-pista-es',
-        '5Rz1': 'https://sites.google.com/view/elmisteriodelcastillo/cuarta-pista-es',
-        '7Mw3': 'https://sites.google.com/view/elmisteriodelcastillo/quinta-pista-es',
-        '3F9a': 'https://sites.google.com/view/elmisteriodelcastillo/sexta-pista-es'
-      }
-    };
-    console.log("Idioma:", idioma, "Código:", codigo);
-    // Si hay código en la URL, redirigir automáticamente
     if (codigo) {
-      if (!idioma) {
-        window.location.href = 'https://sites.google.com/view/elmisteriodelcastillo/inici';
-      } else if (destinos[idioma] && destinos[idioma][codigo]) {
+      var idioma = localStorage.getItem('idioma_juego');
+      
+      var destinos = {
+        'ca': {
+          '16M5': 'https://sites.google.com/view/elmisteriodelcastillo/llums-en-la-nit',
+          'Q2p7': 'https://sites.google.com/view/elmisteriodelcastillo/tercera-pista-ca',
+          '5Rz1': 'https://sites.google.com/view/elmisteriodelcastillo/cuarta-pista-ca',
+          '7Mw3': 'https://sites.google.com/view/elmisteriodelcastillo/quinta-pista-ca',
+          '3F9a': 'https://sites.google.com/view/elmisteriodelcastillo/sexta-pista-ca'
+        },
+        'es': {
+          '16M5': 'https://sites.google.com/view/elmisteriodelcastillo/luces-en-la-noche',
+          'Q2p7': 'https://sites.google.com/view/elmisteriodelcastillo/tercera-pista-es',
+          '5Rz1': 'https://sites.google.com/view/elmisteriodelcastillo/cuarta-pista-es',
+          '7Mw3': 'https://sites.google.com/view/elmisteriodelcastillo/quinta-pista-es',
+          '3F9a': 'https://sites.google.com/view/elmisteriodelcastillo/sexta-pista-es'
+        }
+      };
+
+      if (idioma && destinos[idioma] && destinos[idioma][codigo]) {
         window.location.href = destinos[idioma][codigo];
-      } else {
-        window.location.href = 'https://sites.google.com/view/elmisteriodelcastillo/inici';
       }
     }
   </script>
