@@ -40,6 +40,7 @@
   </div>
 
   <script>
+    // Guardar idioma elegido
     function guardarIdioma(idioma) {
       localStorage.setItem('idioma_juego', idioma);
       if (idioma === 'ca') {
@@ -49,13 +50,38 @@
       }
     }
 
-    // Redirección automática si hay código en la URL
+    // Redirección automática si hay código
     var urlParams = new URLSearchParams(window.location.search);
     var codigo = urlParams.get('c');
 
     if (codigo) {
       var idioma = localStorage.getItem('idioma_juego');
       
+      // Mapeo de códigos por orden
+      var ordenPistas = ['16M5', 'Q2p7', '5Rz1', '7Mw3', '3F9a'];
+      var indiceActual = ordenPistas.indexOf(codigo);
+      
+      // Obtener pistas desbloqueadas (array en localStorage)
+      var pistasDesbloqueadas = localStorage.getItem('pistas_desbloqueadas');
+      if (!pistasDesbloqueadas) {
+        pistasDesbloqueadas = [];
+      } else {
+        pistasDesbloqueadas = JSON.parse(pistasDesbloqueadas);
+      }
+      
+      // Comprobar si puede acceder a esta pista
+      var puedeAcceder = false;
+      
+      if (indiceActual === 0) {
+        // Pista 1: siempre accesible (no necesita pista previa)
+        puedeAcceder = true;
+      } else {
+        // Necesita tener desbloqueada la pista anterior
+        var pistaAnterior = ordenPistas[indiceActual - 1];
+        puedeAcceder = pistasDesbloqueadas.includes(pistaAnterior);
+      }
+      
+      // URLs de destino según idioma
       var destinos = {
         'ca': {
           '16M5': 'https://sites.google.com/view/elmisteriodelcastillo/llums-en-la-nit',
@@ -72,9 +98,24 @@
           '3F9a': 'https://sites.google.com/view/elmisteriodelcastillo/sexta-pista-es'
         }
       };
-
-      if (idioma && destinos[idioma] && destinos[idioma][codigo]) {
+      
+      var pistaNoAccesible = {
+        'ca': 'https://sites.google.com/view/elmisteriodelcastillo/pista-no-accessible',
+        'es': 'https://sites.google.com/view/elmisteriodelcastillo/pista-no-accesible'
+      };
+      
+      // Redirigir
+      if (!idioma) {
+        // No hay idioma, no redirigimos (para que elija)
+      } else if (puedeAcceder) {
+        // Marcar esta pista como desbloqueada
+        if (!pistasDesbloqueadas.includes(codigo)) {
+          pistasDesbloqueadas.push(codigo);
+          localStorage.setItem('pistas_desbloqueadas', JSON.stringify(pistasDesbloqueadas));
+        }
         window.location.href = destinos[idioma][codigo];
+      } else {
+        window.location.href = pistaNoAccesible[idioma];
       }
     }
   </script>
